@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SvR.AuthenticationDemo.Controllers
 {
     [ApiController]
+    // Add the [Authorize] attribute to require authentication on all actions in this controller
+    [Authorize]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
