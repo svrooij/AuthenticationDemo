@@ -40,7 +40,7 @@ namespace SvR.AuthenticationDemo.Authentication.BasicAuth
         /// <param name="builder">The <see cref="AuthenticationBuilder"/>.</param>
         /// <param name="authenticationScheme">The authentication scheme.</param>
         /// <param name="displayName">The display name for the authentication handler.</param>
-        /// <param name="configureOptions">A delegate that allows configuring <see cref="JwtBearerOptions"/>.</param>
+        /// <param name="configureOptions">A delegate that allows configuring <see cref="StaticBasicAuthOptions"/>.</param>
         /// <returns>A reference to <paramref name="builder"/> after the operation has completed.</returns>
         /// <remarks>
         /// This Basic Auth handler is just for demo purposes, it is not secure and should not be used in production!

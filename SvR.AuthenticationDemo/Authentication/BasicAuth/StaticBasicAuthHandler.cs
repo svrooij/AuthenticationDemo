@@ -35,6 +35,7 @@ namespace SvR.AuthenticationDemo.Authentication.BasicAuth
                 // Validate the username and password, with your own method, and return a ClaimsPrincipal if it's valid
                 if(creds.Length == 2 && creds[0].Equals(options.Username, StringComparison.OrdinalIgnoreCase) && creds[1] == options.Password)
                 {
+                    _logger.LogInformation("Basic auth for user {Username} is supplied correct password", creds[0]);
                     // Create a ClaimsPrincipal with the claims you want to use for authorization
                     var claims = new List<Claim>
                     {
