@@ -144,7 +144,8 @@ builder.Services.AddSwaggerGen(swagger =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Always enable swagger, just for demo purposes.
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUi =>
@@ -171,5 +172,5 @@ app.UseAuthorization();
 app.MapControllers()
     //.RequireAuthorization()
     ;
-
+app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
 app.Run();
