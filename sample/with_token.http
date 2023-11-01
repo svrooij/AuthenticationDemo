@@ -1,0 +1,53 @@
+@SvR.AuthenticationDemo_HostAddress = https://localhost:7172
+@scope = api://c47ece9b-5c83-49ea-82fd-71df69074581/.default
+@clientId = d9bb140d-ae36-4d1a-839a-be39442c3270
+@clientSecret = xxx
+@tenant = df68aa03-48eb-4b09-9f3e-8aecc58e207c
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSJ9.eyJhdWQiOiJjNDdlY2U5Yi01YzgzLTQ5ZWEtODJmZC03MWRmNjkwNzQ1ODEiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vZGY2OGFhMDMtNDhlYi00YjA5LTlmM2UtOGFlY2M1OGUyMDdjL3YyLjAiLCJpYXQiOjE2OTg4MzA4NTUsIm5iZiI6MTY5ODgzMDg1NSwiZXhwIjoxNjk4ODM0NzU1LCJhaW8iOiJFMkZnWVBoaXM4S0o1MWE1dEdTNm90bXh5cmdFYnczbFphTCszQzlaSXJiTms2eVdtd1VBIiwiYXpwIjoiZDliYjE0MGQtYWUzNi00ZDFhLTgzOWEtYmUzOTQ0MmMzMjcwIiwiYXpwYWNyIjoiMiIsIm9pZCI6IjY0NDBkNWQxLTI2ZjQtNDc5NC1hZmQ2LTdlNGJlNWY4OTJmOSIsInJoIjoiMC5BVXNBQTZwbzMtdElDVXVmUG9yc3hZNGdmSnZPZnNTRFhPcEpndjF4MzJrSFJZRkxBQUEuIiwicm9sZXMiOlsiT3duZXJEZXRhaWxzLkFsbCJdLCJzdWIiOiI2NDQwZDVkMS0yNmY0LTQ3OTQtYWZkNi03ZTRiZTVmODkyZjkiLCJ0aWQiOiJkZjY4YWEwMy00OGViLTRiMDktOWYzZS04YWVjYzU4ZTIwN2MiLCJ1dGkiOiJPME00TEN6bDBFZUpaeFYyczRzaUFBIiwidmVyIjoiMi4wIn0.EPqvDfDYMHj2Wd6mC4EJpxqWdsj1----OwIcwU9WIb9Z-ptR0D3IoF73w5BlAf2gcejukqTcBLexNp8cJW8obpvir8ukrzi9I0rYbpH1bCWnQVOYf11bxBZa4zQovKNZbsz51hpiUYCv3T4aVA9lA1ITOOedFf-dGxGJ9TUP8CqWBUyacdKQMRfqQlawqnHa7AP0Y55-Loxue7nueWDzU-LE5LCAJeqHZIQcvHJ-LTbqRjiXQ54dSl09wXnWsTi5lNg6W0VCJi6pGRAHfI7HJIEqdQ04IvjQw5m7Oks5F3OpkCIzJdkPQwcFOc-PwQVK1TpgdqfrdEydRx_1uNRFkg
+
+// Get a token from the token endpoint
+// Details at https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow
+POST https://login.microsoftonline.com/{{tenant}}/oauth2/v2.0/token
+
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{clientId}}
+&scope={{scope}}
+&client_secret={{clientSecret}}
+&grant_type=client_credentials
+
+###
+
+// Get the token with a certificate securely stored in Azure Key Vault
+// This uses remte signing, so the certificate never leaves the Key Vault
+// It uses my Key Vault Proxy to do this on your local machine so you don't have to mess with certificates
+// and the sample below does not have any secret information in it
+// More details at https://svrooij.io/2022/03/03/keyvault-proxy/
+
+POST http://localhost:5616/api/Token/kv-key
+
+Content-Type: application/json
+
+{
+  "clientId": "{{clientId}}",
+  "tenantId": "{{tenant}}",
+  "scopes": [
+    "{{scope}}"
+  ],
+  "keyUri": "https://kv-espc-dev-westeu.vault.azure.net/keys/SuperSecretClient/d6afd9302a1d43b4925e8f711522da8f",
+  "keyThumbprint": "zp8oCwYL1a-CuIrjcNElTnUguI8"
+}
+
+###
+GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Details
+
+Authorization: Bearer {{token}}
+
+###
+
+// Get a token using the client credentials flow (with a certificate) first
+
+GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Owner
+
+Authorization: Bearer {{token}}
+Accept: application/json
