@@ -1,0 +1,61 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "1. JWT Authentication",
+  "steps": [
+    {
+      "title": "Intro",
+      "description": "In just a few steps we are going to add JWT authentication to your existing application.\n\nThe demo was build before **NET8.0** was released, but everything shown here should work on **NET8.0** as well since not much changed on this part.\n\n# Requirements\n\nTo enable getting tokens for your API, the API has to be registered in [Entra ID App Registrations](https://cmd.ms/adappreg).\n\nGo ahead and create the app registration for the API, this will be called the resource application in the rest of the tour. No need to set a redirect url.\nBe sure to set the **Application ID URI** and add at least 1 scope (like `user_impersonation`).\n\nUnder `App Roles`, you're going to need to add at least 1 App Role for **Applications**"
+    },
+    {
+      "file": "src/SvR.AuthenticationDemo/Program.cs",
+      "description": "Open your [Program.cs](./src/SvR.AuthenticationDemo/Program.cs) and add authentication.\n\n```csharp\nbuilder.Services.AddAuthentication()\n```",
+      "line": 10,
+      "title": "Add Authentication"
+    },
+    {
+      "file": "src/SvR.AuthenticationDemo/Program.cs",
+      "description": "After your added Authentication, you should add the `.AddJwtBearer(options => {...})` part\n\n```csharp\n.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>\n{\n    // Read the JWT configuration from the appsettings.json file\n    // Check out the 'JWT' section in the appsettings.json file.\n    builder.Configuration.Bind(\"JWT\", options);\n\n    // Just some default settings, you don't want overriden by the appsettings.json file.\n    options.TokenValidationParameters.ValidateAudience = true;\n    options.TokenValidationParameters.ValidateLifetime = true;\n    options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(20);\n    options.TokenValidationParameters.ValidateIssuerSigningKey = true;\n    options.TokenValidationParameters.RequireSignedTokens = true;\n    options.TokenValidationParameters.RequireExpirationTime = true;\n})\n```",
+      "line": 19,
+      "title": "Add bearer authentication",
+      "selection": {
+        "start": {
+          "line": 21,
+          "character": 9
+        },
+        "end": {
+          "line": 31,
+          "character": 72
+        }
+      }
+    },
+    {
+      "file": "src/SvR.AuthenticationDemo/appsettings.json",
+      "description": "Open your `appsettings.json` file and add the `JWT` section.\n\n```csharp\n  \"JWT\": {\n    \"Authority\": \"https://login.microsoftonline.com/organizations/v2.0/\",\n    \"TokenValidationParameters\": {\n      \"ValidAudiences\": [\n        \"api://c47ece9b-5c83-49ea-82fd-71df69074581\",\n        \"c47ece9b-5c83-49ea-82fd-71df69074581\"\n      ],\n      \"ValidateIssuer\":  false\n    }\n  }\n```\n\n### Settings explained\n\n- `Authority` This is the authority where the public key of the issuer will be downloaded. Change `organizations` to `common` to also support personal accounts, or change it to your tenant id for single tenant applications.\n- `TokenValidationParameters`\n  - `ValidAudiences` this is an array of all the allowed audiences. Should be set to both the `App URI` and the `Application ID` of the resource application.\n  - `ValidateIssuer` should be set to `false` in case of a multi-tenant application. And set to `true` in case of a single tenant application. Multi-tenant applications will show the issuer as `https://login.microsoftonline.com/{tenantId}/v2.0`, which does not match `https://login.microsoftonline.com/organizations/v2.0`\n\nInstead of disabling issuer validation, you can also set a list of issuers in the `ValidIssuers` array.",
+      "line": 9,
+      "title": "Add configuration"
+    },
+    {
+      "file": "src/SvR.AuthenticationDemo/Program.cs",
+      "description": "Add an authorization policy that checks one or more roles.\n\n```csharp\nbuilder.Services.AddAuthorization(options =>\n{\n    var secureAppPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)\n        .RequireAuthenticatedUser()\n        .RequireClaim(\"azpacr\", \"2\")\n        .RequireRole(\"OwnerDetails.All\")        \n    .Build();\n\n    options.AddPolicy(\"SecureApp\", secureAppPolicy);\n});\n```\n\n### Authorization explained ❔\n\nThis code creates an `AuthorizationPolicyBuilder` for a specific Scheme, with 3 rules:\n\n1. The user has to be Authenticated\n2. There has to be a `azpacr` claim with the value `2` (this means only certificates or managed identites are allowed). Value `1` means the client was authenticated with a secret (which is not very safe).\n3. There has to be a `role` claim with the value `OwnerDetails.All`.\n\n## Check the roles ⚠️\n\n**Warning**: Any application in your tenant can get a token for any other application in your tenant! The token will however not contain any roles, which is why it is super important to check for the expected role!",
+      "line": 35,
+      "title": "Define authorization"
+    },
+    {
+      "file": "src/SvR.AuthenticationDemo/Controllers/UserController.cs",
+      "description": "Enable Authorization on any Controller (or Action) you want with the `Authorize` attribute\n\n```csharp\n[Authorize]\n```",
+      "line": 14,
+      "title": "Protect single controller"
+    },
+    {
+      "file": "src/SvR.AuthenticationDemo/Program.cs",
+      "description": "Protect all controllers by adding `.RequireAuthorization()` to the `.MapControllers()` call.\n\n```csharp\n.RequireAuthorization()\n```",
+      "line": 172,
+      "title": "(optional) Protect all controllers"
+    },
+    {
+      "title": "Protected",
+      "description": "# Congratulations 🎊\n\nYour api is successfully protected with Entra ID. Continue to the next tour to see how you can enable a token client in swagger for easier debugging."
+    }
+  ],
+  "isPrimary": true
+}
