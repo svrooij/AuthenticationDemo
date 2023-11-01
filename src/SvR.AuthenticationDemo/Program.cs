@@ -69,7 +69,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
-    swagger.SwaggerDoc("v1", new() { Title = "Authentication demo", Version = "v1" });
+    swagger.SwaggerDoc("v1", new() {
+        Title = "Authentication demo", 
+        Version = "v1", 
+        Description = "A demo API to show how JWT authentication works in .NET7 by Stephan van Rooij", 
+        Contact = new()
+        {
+            Url = new Uri("https://github.com/svrooij/AuthenticationDemo"),
+            Name = "Authentication demo repository"
+        },
+        License = new()
+        {
+            Name = "MIT",
+            Url = new Uri("https://github.com/svrooij/AuthenticationDemo/blob/main/LICENSE.txt")
+        }
+    });
 
     #region Swagger Basic Auth
     // Add basic auth to swagger documentation
