@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: I have a question about this repository
+    url: https://github.com/svrooij/AuthenticationDemo/discussions/categories/q-a
+    about: "Use the Q & A section in discussions to ask your questions"
+  - name: Talk feedback
+    url: https://github.com/svrooij/AuthenticationDemo/discussions/categories/talk-feedback
+    about: Followed this session? Please leave your feedback here
+  - name: Blog
+    url: https://svrooij.io
+    about: Check my blog for more interesting posts
+  - name: ESPC Schedule
+    url: https://www.sharepointeurope.com/conference/schedule/2023/
+    about: Check the ESPC schedule for more interesting sessions

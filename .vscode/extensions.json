@@ -1,0 +1,7 @@
+{
+	"recommendations": [
+		"ms-dotnettools.csdevkit",
+		"vsls-contrib.codetour",
+		"humao.rest-client"
+	]
+}

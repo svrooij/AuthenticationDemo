@@ -1,16 +1,14 @@
-@SvR.AuthenticationDemo_HostAddress = https://localhost:7172
+@AuthenticationDemo_HostAddress = http://localhost:5078
 
-GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Details
+GET {{AuthenticationDemo_HostAddress}}/api/user/Details
 
 ###
 // Basic authentication
-GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Details
-
-Authorization Basic "aGVsbG86V29ybGQ="
+GET {{AuthenticationDemo_HostAddress}}/api/user/Details
+Authorization: Basic SGVsbG86V29ybGQ=
 
 ###
 
 // API Key authentication
-GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Details
-
+GET {{AuthenticationDemo_HostAddress}}/api/user/Details
 X-API-Key: SuperSecretKey

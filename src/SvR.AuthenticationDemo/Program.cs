@@ -7,7 +7,7 @@ using SvR.AuthenticationDemo.Authentication.BasicAuth;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddAuthentication(ApiKeyDefaults.DefaultScheme)
+builder.Services.AddAuthentication()
     // This is a demo implementation of basic auth, it is not secure and should not be used in production!
     .AddBasicAuth("Hello", "World")
     // This is a demo implementation of API key auth, it is not secure and should not be used in production!
@@ -16,7 +16,7 @@ builder.Services.AddAuthentication(ApiKeyDefaults.DefaultScheme)
 
     // This is all it takes to add JWT authentication to your application.
     // It's really that easy!
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,options =>
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
         // Read the JWT configuration from the appsettings.json file
         // Check out the 'JWT' section in the appsettings.json file.
@@ -29,23 +29,6 @@ builder.Services.AddAuthentication(ApiKeyDefaults.DefaultScheme)
         options.TokenValidationParameters.ValidateIssuerSigningKey = true;
         options.TokenValidationParameters.RequireSignedTokens = true;
         options.TokenValidationParameters.RequireExpirationTime = true;
-
-        // The settings below are read from the appsettings.json file, but explained here for clearity.
-        // You don't need the rest of this block.
-
-        // The Authority is the URL of the identity provider.
-        // Change the 'organizations' to your tenant id if you just want to allow access from your own tenant.
-        options.Authority = "https://login.microsoftonline.com/organizations/v2.0/";
-        // Multi tenant applications should NOT validate the issuer, since it will be different for each tenant!
-        options.TokenValidationParameters.ValidateIssuer = false;
-
-        // Set the allowed audiences. This is the app uri and the application id of the API (resource application).
-        // You need to set both, because you might get either depending on the flow the user/client used.
-        options.TokenValidationParameters.ValidAudiences = new string[] {
-            "api://c47ece9b-5c83-49ea-82fd-71df69074581",
-            "c47ece9b-5c83-49ea-82fd-71df69074581"
-        };
-
     })
     ;
 
@@ -161,7 +144,8 @@ builder.Services.AddSwaggerGen(swagger =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Always enable swagger, just for demo purposes.
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUi =>
@@ -185,6 +169,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
-
+app.MapControllers()
+    //.RequireAuthorization()
+    ;
+app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
 app.Run();

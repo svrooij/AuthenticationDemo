@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug API",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/src/SvR.AuthenticationDemo/SvR.AuthenticationDemo.csproj"
+        }
+    ]
+}
