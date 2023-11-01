@@ -5,7 +5,12 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SvR.AuthenticationDemo", "src\SvR.AuthenticationDemo\SvR.AuthenticationDemo.csproj", "{689F0A6A-6935-4582-B66C-BEEF6EC79B99}"
 EndProject
-
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "requests", "requests", "{6F6E4FFA-1703-4B7C-BEC0-2F2F966D652D}"
+	ProjectSection(SolutionItems) = preProject
+		sample\user_details.http = sample\user_details.http
+		sample\with_token.http = sample\with_token.http
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

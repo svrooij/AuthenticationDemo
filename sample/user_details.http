@@ -5,7 +5,7 @@ GET {{AuthenticationDemo_HostAddress}}/api/user/Details
 ###
 // Basic authentication
 GET {{AuthenticationDemo_HostAddress}}/api/user/Details
-Authorization: Basic aGVsbG86V29ybGQ=
+Authorization: Basic SGVsbG86V29ybGQ=
 
 ###
 
