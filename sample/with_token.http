@@ -1,4 +1,4 @@
-@SvR.AuthenticationDemo_HostAddress = https://localhost:7172
+@AuthenticationDemo_HostAddress = http://localhost:5078
 @scope = api://c47ece9b-5c83-49ea-82fd-71df69074581/.default
 @clientId = d9bb140d-ae36-4d1a-839a-be39442c3270
 @clientSecret = xxx
@@ -25,7 +25,6 @@ client_id={{clientId}}
 // More details at https://svrooij.io/2022/03/03/keyvault-proxy/
 
 POST http://localhost:5616/api/Token/kv-key
-
 Content-Type: application/json
 
 {
@@ -39,15 +38,13 @@ Content-Type: application/json
 }
 
 ###
-GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Details
-
+GET {{AuthenticationDemo_HostAddress}}/api/user/Details
 Authorization: Bearer {{token}}
 
 ###
 
 // Get a token using the client credentials flow (with a certificate) first
 
-GET {{SvR.AuthenticationDemo_HostAddress}}/api/user/Owner
-
+GET {{AuthenticationDemo_HostAddress}}/api/user/Owner
 Authorization: Bearer {{token}}
 Accept: application/json

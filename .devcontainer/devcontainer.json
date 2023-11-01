@@ -26,7 +26,8 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csdevkit",
-				"vsls-contrib.codetour"
+				"vsls-contrib.codetour",
+				"humao.rest-client"
 			]
 		}
 	}
