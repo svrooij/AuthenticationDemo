@@ -39,6 +39,12 @@ namespace SvR.AuthenticationDemo.Controllers
             return User.Claims?.ToDictionary(c => c.Type, c => c.Value);
         }
 
+        [HttpGet("hi")]
+        public string Hi()
+        {
+            return $"Hi {User.Identity?.Name}\r\nRemote IP: {this.HttpContext.Connection.RemoteIpAddress}";
+        }
+
         /// <summary>
         /// Secret endpoint, with details on how to get some free consulting.
         /// </summary>
