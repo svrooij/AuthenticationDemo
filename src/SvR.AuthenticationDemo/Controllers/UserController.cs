@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -39,7 +40,11 @@ namespace SvR.AuthenticationDemo.Controllers
             return User.Claims?.ToDictionary(c => c.Type, c => c.Value);
         }
 
+        /// <summary>
+        /// Say hi to the current user.
+        /// </summary>
         [HttpGet("hi")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public string Hi()
         {
             return $"Hi {User.Identity?.Name}\r\nRemote IP: {this.HttpContext.Connection.RemoteIpAddress}";

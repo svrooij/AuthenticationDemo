@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SvR.AuthenticationDemo.Authentication.ApiKey;
 using SvR.AuthenticationDemo.Authentication.BasicAuth;
@@ -30,6 +31,7 @@ builder.Services.AddAuthentication()
         options.TokenValidationParameters.ValidateIssuerSigningKey = true;
         options.TokenValidationParameters.RequireSignedTokens = true;
         options.TokenValidationParameters.RequireExpirationTime = true;
+        options.TokenValidationParameters.NameClaimType = "name";
     })
     ;
 
