@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SvR.AuthenticationDemo.Controllers
 {
+    /// <summary>
+    /// WeatherForecastController
+    /// </summary>
     [ApiController]
     // Add the [Authorize] attribute to require authentication on all actions in this controller
     [Authorize]
     [Route("[controller]")]
+
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -16,6 +20,10 @@ namespace SvR.AuthenticationDemo.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
+        /// <summary>
+        /// WeatherForecastController constructor
+        /// </summary>
+        /// <param name="logger"></param>
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;

@@ -5,8 +5,9 @@ using System.Security.Claims;
 
 namespace SvR.AuthenticationDemo.Controllers
 {
-    
-
+    /// <summary>
+    /// This controller is used to demonstrate how to use the User property in your controllers.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     // If you only have one authentication scheme, the authentication handler will be called anyway. And thus fill the User property.
@@ -16,19 +17,33 @@ namespace SvR.AuthenticationDemo.Controllers
     {
         private readonly ILogger<UserController> logger;
         private readonly IConfiguration _configuration;
-
+        
+        /// <summary>
+        /// UserController constructor
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="logger"></param>
         public UserController(IConfiguration configuration, ILogger<UserController> logger)
         {
             _configuration = configuration;
             this.logger = logger;
         }
 
+        /// <summary>
+        /// This endpoint will return the claims of the current user.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Details")]
         public Dictionary<string,string>? GetClaims()
         {
             return User.Claims?.ToDictionary(c => c.Type, c => c.Value);
         }
 
+        /// <summary>
+        /// Secret endpoint, with details on how to get some free consulting.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>Lets hope no own discoveres how to access this endpoint</remarks>
         [HttpGet("Owner")]
         [Authorize("SecureApp")]
         public string GetOwner()

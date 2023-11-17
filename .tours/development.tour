@@ -9,19 +9,19 @@
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "Inside the `builder.Services.AddSwaggerGen(swagger => {})` block, you'll need to add the following code.\n\n```csharp\nswagger.AddSecurityDefinition(\"JWT\", new OpenApiSecurityScheme()\n{\n    Type = SecuritySchemeType.OAuth2,\n    Flows = new OpenApiOAuthFlows()\n    {\n        AuthorizationCode = new OpenApiOAuthFlow()\n        {\n            // Copied from the Entra portal under the app registration -> overview -> endpoints\n            AuthorizationUrl = new Uri(\"https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize\"),\n            TokenUrl = new Uri(\"https://login.microsoftonline.com/organizations/oauth2/v2.0/token\"),\n            // Specify which app you want to request access to, this is one of the scopes you defined in the app registration for the API (resource application).\n            Scopes = new Dictionary<string, string>()\n            {\n                { \"api://c47ece9b-5c83-49ea-82fd-71df69074581/user_impersonation\", \"Access the API as a user\" }\n            }\n        }\n    }\n});\n```\n\nYou should replace the `api://..../user_imporsonation` part with the scope you registered in the resource application.",
-      "line": 113,
+      "line": 132,
       "title": "Security Definition"
     },
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "After creating the [Security Definition](#2) we need to link it to all endpoints.\n\n```csharp\nswagger.AddSecurityRequirement(new OpenApiSecurityRequirement\n{\n    {\n        new OpenApiSecurityScheme\n        {\n            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = \"JWT\" }\n        },\n        new string[] { }\n    }\n});\n```\n\nThis addeds the security requirement to all endpoints, which may not be desired. For advanced use cases you could use [Document processors](https://github.com/RicoSuter/NSwag/wiki/Document-Processors-and-Operation-Processors) to dynamically add the required security requirements to the different endpoints.",
-      "line": 131,
+      "line": 150,
       "title": "Security Requirement"
     },
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "After adding the `JWT` security requirement, you can pre-fill the swagger ui with the correct data if you wish.\n\n```csharp\n    app.UseSwaggerUI(swaggerUi =>\n    {\n        // Pre-fill the swagger UI with the correct client id.\n        // This is completely optional, but it makes testing a lot easier.\n        swaggerUi.OAuthClientId(\"366faa7a-25d3-414e-af67-ecb8dd6b6670\");\n\n        // Enable PKCE, this is required for the authorization code flow.\n        // Let's say you have a SPA application, you can't keep a secret in a SPA application.\n        // that is why they invented PKCE, it's a way to \"authenticate\" without a secret.\n        // More info: https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow\n        swaggerUi.OAuthUsePkce();\n\n        // Add the scopes that should be requested when the user tries to login.\n        swaggerUi.OAuthScopes(\"api://c47ece9b-5c83-49ea-82fd-71df69074581/user_impersonation\", \"openid\", \"profile\");\n    });\n```\n\nBe sure to replace the `OAuthClientId` with your own client id (client application). And change the `api://..../user_impersonation` scope to the scope required for the api (resource application).",
-      "line": 150,
+      "line": 170,
       "title": "Swagger UI"
     }
   ]

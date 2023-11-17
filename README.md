@@ -43,7 +43,7 @@ In [protection against certificate extraction](https://svrooij.io/2022/05/27/cer
 
 ## During development
 
-During development, if you follewed the tour, you have three options.
+During development, if you followed the tour, you have three options.
 
 1. Automatically get a token using the built-in Token client in the swagger api.
 2. Use my [Azure KeyVault Proxy](https://svrooij.io/2022/03/03/keyvault-proxy/) to get a token with your developer credentials, while the certificate is stored in the Key Vault without a way to extract it.

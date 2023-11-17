@@ -49,7 +49,7 @@
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "Protect all controllers by adding `.RequireAuthorization()` to the `.MapControllers()` call.\n\n```csharp\n.RequireAuthorization()\n```",
-      "line": 172,
+      "line": 192,
       "title": "(optional) Protect all controllers"
     },
     {

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -69,8 +70,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
+    // Describe the API version (the description is optional, the version is required)
     swagger.SwaggerDoc("v1", new() {
-        Title = "Authentication demo", 
+        Title = "ESPC23 - Authentication demo", 
         Version = "v1", 
         Description = "A demo API to show how JWT authentication works in .NET7 by Stephan van Rooij", 
         Contact = new()
@@ -84,6 +86,11 @@ builder.Services.AddSwaggerGen(swagger =>
             Url = new Uri("https://github.com/svrooij/AuthenticationDemo/blob/main/LICENSE.txt")
         }
     });
+
+    // Add the XML comments to the swagger documentation (optional)
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    swagger.IncludeXmlComments(xmlPath, true);
 
     #region Swagger Basic Auth
     // Add basic auth to swagger documentation
@@ -186,5 +193,8 @@ app.UseAuthorization();
 app.MapControllers()
     //.RequireAuthorization()
     ;
-app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
+
+// Redirect the root to the swagger UI, and hide from swagger itself.
+app.MapGet("/", () => Results.Redirect("/swagger/index.html")).ExcludeFromDescription();
+
 app.Run();
