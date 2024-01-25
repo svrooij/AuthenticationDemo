@@ -18,7 +18,7 @@ namespace SvR.AuthenticationDemo.Controllers
     {
         private readonly ILogger<UserController> logger;
         private readonly IConfiguration _configuration;
-        
+
         /// <summary>
         /// UserController constructor
         /// </summary>
@@ -35,7 +35,9 @@ namespace SvR.AuthenticationDemo.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("Details")]
-        public Dictionary<string,string>? GetClaims()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Dictionary<string, string>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public Dictionary<string, string>? GetClaims()
         {
             return User.Claims?.ToDictionary(c => c.Type, c => c.Value);
         }
@@ -45,6 +47,9 @@ namespace SvR.AuthenticationDemo.Controllers
         /// </summary>
         [HttpGet("hi")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
         public string Hi()
         {
             return $"Hi {User.Identity?.Name}\r\nRemote IP: {this.HttpContext.Connection.RemoteIpAddress}";
@@ -57,6 +62,9 @@ namespace SvR.AuthenticationDemo.Controllers
         /// <remarks>Lets hope no own discoveres how to access this endpoint</remarks>
         [HttpGet("Owner")]
         [Authorize("SecureApp")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public string GetOwner()
         {
             // This claim will have the value of `1` if the application uses a client secret for authentication
@@ -73,7 +81,7 @@ namespace SvR.AuthenticationDemo.Controllers
             logger.LogWarning("Someone accessed the owner endpoint from tenant {TenantId}", tenantId);
             var message = "The first one who will send me an email at: "
                 + _configuration["OwnerEmail"]
-                +" with a picture of their conference badge from an email at tenant: "
+                + " with a picture of their conference badge from an email at tenant: "
                 + tenantId
                 + " will get 2 hours of free consulting on this topic!";
             return message;

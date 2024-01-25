@@ -32,7 +32,7 @@ try
 {
     // Check if we already have a previously logged in user
     var accounts = await publicClient.GetAccountsAsync();
-    
+
     if (accounts is not null && accounts.Any())
     {
         // Try to get a token silently, if this fails, we need to do an interactive login.
@@ -45,7 +45,8 @@ try
         authResult = await publicClient.AcquireTokenInteractive(scopes)
             .ExecuteAsync();
     }
-} catch (MsalUiRequiredException)
+}
+catch (MsalUiRequiredException)
 {
     // User needs to consent, or is not logged in.
     // Lets do an interactive login.
@@ -53,10 +54,10 @@ try
         .ExecuteAsync();
 }
 
-catch(Exception ex)
+catch (Exception ex)
 {
     Console.WriteLine($"Error: {ex.Message}");
-    
+
 }
 
 if (authResult is null)
@@ -85,7 +86,7 @@ Console.WriteLine("/api/User/Details result:");
 if (claimsResponse.IsSuccessStatusCode)
 {
     var content = await claimsResponse.Content.ReadAsStringAsync();
-    
+
     Console.WriteLine(content);
 }
 else

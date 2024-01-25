@@ -9,13 +9,13 @@
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "Open your [Program.cs](./src/SvR.AuthenticationDemo/Program.cs) and add authentication.\n\n```csharp\nbuilder.Services.AddAuthentication()\n```",
-      "line": 10,
+      "line": 12,
       "title": "Add Authentication"
     },
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "After your added Authentication, you should add the `.AddJwtBearer(options => {...})` part\n\n```csharp\n.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>\n{\n    // Read the JWT configuration from the appsettings.json file\n    // Check out the 'JWT' section in the appsettings.json file.\n    builder.Configuration.Bind(\"JWT\", options);\n\n    // Just some default settings, you don't want overriden by the appsettings.json file.\n    options.TokenValidationParameters.ValidateAudience = true;\n    options.TokenValidationParameters.ValidateLifetime = true;\n    options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(20);\n    options.TokenValidationParameters.ValidateIssuerSigningKey = true;\n    options.TokenValidationParameters.RequireSignedTokens = true;\n    options.TokenValidationParameters.RequireExpirationTime = true;\n})\n```",
-      "line": 19,
+      "line": 21,
       "title": "Add bearer authentication",
       "selection": {
         "start": {
@@ -37,19 +37,19 @@
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "Add an authorization policy that checks one or more roles.\n\n```csharp\nbuilder.Services.AddAuthorization(options =>\n{\n    var secureAppPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)\n        .RequireAuthenticatedUser()\n        .RequireClaim(\"azpacr\", \"2\")\n        .RequireRole(\"OwnerDetails.All\")        \n    .Build();\n\n    options.AddPolicy(\"SecureApp\", secureAppPolicy);\n});\n```\n\n### Authorization explained ❔\n\nThis code creates an `AuthorizationPolicyBuilder` for a specific Scheme, with 3 rules:\n\n1. The user has to be Authenticated\n2. There has to be a `azpacr` claim with the value `2` (this means only certificates or managed identites are allowed). Value `1` means the client was authenticated with a secret (which is not very safe).\n3. There has to be a `role` claim with the value `OwnerDetails.All`.\n\n## Check the roles ⚠️\n\n**Warning**: Any application in your tenant can get a token for any other application in your tenant! The token will however not contain any roles, which is why it is super important to check for the expected role!",
-      "line": 35,
+      "line": 38,
       "title": "Define authorization"
     },
     {
       "file": "src/SvR.AuthenticationDemo/Controllers/UserController.cs",
       "description": "Enable Authorization on any Controller (or Action) you want with the `Authorize` attribute\n\n```csharp\n[Authorize]\n```",
-      "line": 14,
+      "line": 16,
       "title": "Protect single controller"
     },
     {
       "file": "src/SvR.AuthenticationDemo/Program.cs",
       "description": "Protect all controllers by adding `.RequireAuthorization()` to the `.MapControllers()` call.\n\n```csharp\n.RequireAuthorization()\n```",
-      "line": 192,
+      "line": 197,
       "title": "(optional) Protect all controllers"
     },
     {

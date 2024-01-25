@@ -30,6 +30,8 @@ namespace SvR.AuthenticationDemo.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

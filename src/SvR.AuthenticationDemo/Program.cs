@@ -73,10 +73,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
     // Describe the API version (the description is optional, the version is required)
-    swagger.SwaggerDoc("v1", new() {
-        Title = "BitBash - Authentication demo", 
-        Version = "v1", 
-        Description = "A demo API to show how JWT authentication works in .NET7 by Stephan van Rooij", 
+    swagger.SwaggerDoc("v1", new()
+    {
+        Title = "BitBash - Authentication demo",
+        Version = "v1",
+        Description = "A demo API to show how JWT authentication works in .NET7 by Stephan van Rooij",
         Contact = new()
         {
             Url = new Uri("https://github.com/svrooij/AuthenticationDemo"),
@@ -113,7 +114,7 @@ builder.Services.AddSwaggerGen(swagger =>
 
     #region Swagger API Key Auth
     // Add API key auth to swagger documentation
-    swagger.AddSecurityDefinition(ApiKeyDefaults.DefaultScheme, new () { Type = SecuritySchemeType.ApiKey , In = ParameterLocation.Header, Name = "X-API-Key" });
+    swagger.AddSecurityDefinition(ApiKeyDefaults.DefaultScheme, new() { Type = SecuritySchemeType.ApiKey, In = ParameterLocation.Header, Name = "X-API-Key" });
 
     // Add API key auth to each endpoint
     swagger.AddSecurityRequirement(new OpenApiSecurityRequirement

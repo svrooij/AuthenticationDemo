@@ -33,7 +33,7 @@ namespace SvR.AuthenticationDemo.Authentication.BasicAuth
                 var creds = Encoding.UTF8.GetString(Convert.FromBase64String(parsedHeader.Parameter!)).Split(':', 2);
                 // You now have the username and password in the creds array
                 // Validate the username and password, with your own method, and return a ClaimsPrincipal if it's valid
-                if(creds.Length == 2 && creds[0].Equals(options.Username, StringComparison.OrdinalIgnoreCase) && creds[1] == options.Password)
+                if (creds.Length == 2 && creds[0].Equals(options.Username, StringComparison.OrdinalIgnoreCase) && creds[1] == options.Password)
                 {
                     _logger.LogInformation("Basic auth for user {Username} is supplied correct password", creds[0]);
                     // Create a ClaimsPrincipal with the claims you want to use for authorization
@@ -49,7 +49,7 @@ namespace SvR.AuthenticationDemo.Authentication.BasicAuth
             }
 
             return AuthenticateResult.NoResult();
-            
+
         }
     }
 }
