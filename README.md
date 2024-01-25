@@ -16,7 +16,7 @@ I blog a lot on security stuff, check it out [svrooij.io](https://svrooij.io)
 
 ### Access your api with a managed identity
 
-Now that you have your api protected with a managed identity, you can easily access it with a managed identity.
+Now that you have your api protected with a Entra ID, you can easily access it with a managed identity.
 
 1. Grant access to your api using [this post](https://svrooij.io/2023/06/19/assign-additional-permissions-to-service-principal/).
 2. Add code to get the token.

@@ -13,7 +13,7 @@ builder.Services.AddAuthentication()
     // This is a demo implementation of basic auth, it is not secure and should not be used in production!
     .AddBasicAuth("Hello", "World")
     // This is a demo implementation of API key auth, it is not secure and should not be used in production!
-    .AddApiKey(new string[] { "SuperSecretKey", "ESPC23" })
+    .AddApiKey(new string[] { "SuperSecretKey", "ESPC23", "BitBash" })
 
 
     // This is all it takes to add JWT authentication to your application.
@@ -74,7 +74,7 @@ builder.Services.AddSwaggerGen(swagger =>
 {
     // Describe the API version (the description is optional, the version is required)
     swagger.SwaggerDoc("v1", new() {
-        Title = "ESPC23 - Authentication demo", 
+        Title = "BitBash - Authentication demo", 
         Version = "v1", 
         Description = "A demo API to show how JWT authentication works in .NET7 by Stephan van Rooij", 
         Contact = new()
